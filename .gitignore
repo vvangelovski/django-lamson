@@ -9,9 +9,6 @@ cache/??
 run
 *.wsgi
 nbproject
-settings_local.py
-settings.py
-.idea
 *.iml
 lint
 env
