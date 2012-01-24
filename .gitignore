@@ -43,3 +43,4 @@ run
 recaptcha
 /.ve
 /db.sq3
+*.db
