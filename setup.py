@@ -30,7 +30,7 @@ setup(
     download_url = 'https://github.com/vvangelovski/django-lamson',
     include_package_data = True,
     zip_safe = False,
-    
+    install_requires=["lamson==1.1"],
     classifiers = STATUS + [
        'Environment :: Plugins',
         'Framework :: Django',
