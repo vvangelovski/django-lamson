@@ -108,7 +108,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         #version 1.2 does not exists?
-        if LAMSON_VERSION < '1.2':
+        if LAMSON_VERSION['version'] < '1.2':
             lamson_utils.start_server(options['pid'],
                                     options['force'],
                                     options['chroot'],
