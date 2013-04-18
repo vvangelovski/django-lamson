@@ -2,6 +2,7 @@ from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings as django_settings
 from lamson import  commands, utils as lamson_utils
+from lamson.version import VERSION as LAMSON_VERSION
 
 
 class Settings(object):
@@ -20,13 +21,13 @@ def _settings_loader():
     	if attr_name.startswith("LAMSON_"):
     		setattr(settings, attr_name.split("LAMSON_")[1].lower(),
              getattr(django_settings, attr_name))
-    
+
     #logging.config.fileConfig("logging.conf")
 
     # the relay host to actually send the final message to
     #TODO make debug a parameter to the command
     if hasattr(settings, 'relay_config'):
-        settings.relay = Relay(host=settings.relay_config['host'], 
+        settings.relay = Relay(host=settings.relay_config['host'],
                                port=settings.relay_config['port'], debug=1)
 
     # where to listen for incoming messages
@@ -42,9 +43,9 @@ def _settings_loader():
 
     if hasattr(settings, 'template_config'):
         view.LOADER = jinja2.Environment(
-            loader=jinja2.PackageLoader(settings.template_config['dir'], 
+            loader=jinja2.PackageLoader(settings.template_config['dir'],
                                         settings.template_config['module']))
-    	
+
     return settings
 
 class Command(BaseCommand):
@@ -106,12 +107,25 @@ class Command(BaseCommand):
  )
 
     def handle(self, *args, **options):
-        lamson_utils.start_server(options['pid'],
-                                options['force'],
-                                options['chroot'],
-                                options['chdir'],
-                                options['uid'],
-                                options['gid'], 
-                                options['umask'],
-                                _settings_loader)
-    
+        #version 1.2 does not exists?
+        if LAMSON_VERSION < '1.2':
+            lamson_utils.start_server(options['pid'],
+                                    options['force'],
+                                    options['chroot'],
+                                    options['chdir'],
+                                    options['uid'],
+                                    options['gid'],
+                                    options['umask'],
+                                    _settings_loader)
+        else:
+            lamson_utils.start_server(options['pid'],
+                                    options['force'],
+                                    options['chroot'],
+                                    options['chdir'],
+                                    options['uid'],
+                                    options['gid'],
+                                    options['umask'],
+                                    _settings_loader,
+                                    django_settings.DEBUG)
+
+
